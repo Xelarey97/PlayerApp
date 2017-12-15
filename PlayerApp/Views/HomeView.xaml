@@ -23,7 +23,7 @@
                 </GridView>
             </ListView.View>
         </ListView>
-            <Grid Grid.Row="1" Background="SteelBlue">
+        <Grid Grid.Row="1" Background="#FF444444">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="60"/>
@@ -41,7 +41,8 @@
                     Margin="10"/>
 
             <Button Grid.Column="2"
-                    Margin="10"/>
+                    Margin="10"
+                    Command="{Binding PlayPauseMusicCommand}"/>
 
             <Button Grid.Column="3"
                     Margin="10"/>
