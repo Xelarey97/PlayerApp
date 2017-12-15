@@ -12,17 +12,26 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MahApps.Metro.Controls;
 
 namespace PlayerApp
 {
     /// <summary>
     /// Lógica de interacción para MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void HamburguerMenuControl_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            // set the content
+            this.HamburguerMenuControl.Content = e.ClickedItem;
+            // close the pane
+            this.HamburguerMenuControl.IsPaneOpen = false;
         }
     }
 }
