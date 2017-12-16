@@ -32,20 +32,33 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Label Grid.Column="0" 
+            <DockPanel Grid.Column="0"
+                       VerticalAlignment="Stretch"
+                       HorizontalAlignment="Center">
+                <Label Grid.Column="0" 
                    Content="{Binding CancionSeleccionada.Nombre}" 
                    VerticalAlignment="Center" 
                    HorizontalAlignment="Center"/>
+            </DockPanel>
 
             <Button Grid.Column="1"
-                    Margin="10"/>
+                    Margin="10"
+                    Command="{Binding PrevSongCommand}"/>
 
             <Button Grid.Column="2"
                     Margin="10"
                     Command="{Binding PlayPauseMusicCommand}"/>
 
             <Button Grid.Column="3"
-                    Margin="10"/>
+                    Margin="10"
+                    Command="{Binding NextSongCommand}"/>
+            <Slider Grid.Column="4" Minimum="0" Maximum="1" Value="{Binding CurrentVolume, Mode=TwoWay}" x:Name="VolumeControl" VerticalAlignment="Center" Margin="10">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="ValueChanged">
+                        <i:InvokeCommandAction Command="{Binding VolumeControlCommand}"></i:InvokeCommandAction>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Slider>
         </Grid>
     </Grid>
 </UserControl>
