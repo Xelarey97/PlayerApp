@@ -20,44 +20,44 @@ namespace PlayerApp.Model
 
         public int ID
         {
-            get => id;
-            set => Set<int>(() => this.ID, ref id, value);
+            get { return id; }
+            set { Set<int>(() => this.ID, ref id, value); }
         }
 
         public string Nombre
         {
-            get => nombre;
-            set => Set<string>(() => this.Nombre, ref nombre, value);
+            get { return nombre; }
+            set { Set<string>(() => this.Nombre, ref nombre, value); }
         }
 
         public string Artista
         {
-            get => artista;
-            set => Set<string>(() => this.Artista, ref artista, value);
+            get { return artista; }
+            set { Set<string>(() => this.Artista, ref artista, value); }
         }
 
         public string Album
         {
-            get => album;
-            set => Set<string>(() => this.Album, ref album, value);
+            get { return album; }
+            set { Set<string>(() => this.Album, ref album, value); }
         }
 
         public float Duracion
         {
-            get => duracion;
-            set => Set<float>(() => this.Duracion, ref duracion, value);
+            get { return duracion; }
+            set { Set<float>(() => this.Duracion, ref duracion, value); }
         }
 
         public string Genero
         {
-            get => genero;
-            set => Set<string>(() => this.Genero, ref genero, value);
+            get { return genero; }
+            set { Set<string>(() => this.Genero, ref genero, value); }
         }
 
         public string Ruta
         {
-            get => ruta;
-            set => Set<string>(() => this.Ruta, ref ruta, value);
+            get { return ruta; }
+            set { Set<string>(() => this.Ruta, ref ruta, value); }
         }
         #endregion
     }

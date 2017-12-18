@@ -45,13 +45,22 @@
             
             <Controls:HamburgerMenu.ItemsSource>
                 <Controls:HamburgerMenuItemCollection>
+                    
                     <Controls:HamburgerMenuGlyphItem Glyph="" Label="Canciones">
                         <Controls:HamburgerMenuGlyphItem.Tag>
                             <views:HomeView/>
                         </Controls:HamburgerMenuGlyphItem.Tag>
                     </Controls:HamburgerMenuGlyphItem>
+
+                    <Controls:HamburgerMenuGlyphItem Glyph="" Label="Canciones">
+                        <Controls:HamburgerMenuGlyphItem.Tag>
+                            <views:PlayListView/>
+                        </Controls:HamburgerMenuGlyphItem.Tag>
+                    </Controls:HamburgerMenuGlyphItem>
+                    
                 </Controls:HamburgerMenuItemCollection>
             </Controls:HamburgerMenu.ItemsSource>
+            
 
             <Controls:HamburgerMenu.ContentTemplate>
                 <DataTemplate DataType="{x:Type Controls:HamburgerMenuItem}">

@@ -18,11 +18,14 @@ namespace PlayerApp.ViewModel
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<HomeViewModel>();
+            SimpleIoc.Default.Register<PlayListViewModel>();
         }
 
-        public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
+        public MainViewModel Main { get { return ServiceLocator.Current.GetInstance<MainViewModel>(); } }
 
-        public HomeViewModel HomeViewModel => ServiceLocator.Current.GetInstance<HomeViewModel>();
+        public HomeViewModel HomeViewModel { get { return ServiceLocator.Current.GetInstance<HomeViewModel>(); } }
+
+        public PlayListViewModel PlayListViewModel { get { return ServiceLocator.Current.GetInstance<PlayListViewModel>(); } }
         
         public static void Cleanup()
         {

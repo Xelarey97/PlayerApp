@@ -25,7 +25,7 @@ namespace PlayerApp.ViewModel
 
         public ObservableCollection<Cancion> Canciones
         {
-            get => canciones;
+            get { return canciones; }
             set
             {
                 canciones = value;
@@ -34,7 +34,7 @@ namespace PlayerApp.ViewModel
         }
         public Cancion CancionSeleccionada
         {
-            get => cancionSeleccionada;
+            get { return cancionSeleccionada; }
             set
             {
                 cancionSeleccionada = value;
@@ -43,7 +43,7 @@ namespace PlayerApp.ViewModel
         }
         public float CurrentVolume
         {
-            get => currentVolume;
+            get { return currentVolume; }
             set
             {
                 currentVolume = value;
