@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.CommandWpf;
 using NAudio.Wave;
 using PlayerApp.Model;
+using PlayerApp.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -22,6 +23,8 @@ namespace PlayerApp.ViewModel
         private AudioPlayer _audioPlayer;
         private PlaybackState _playbackState;
         private float currentVolume;
+        private ObservableCollection<PlayList> listasDeReproduccion;
+        private PlayList listaDeReproduccionSeleccionada;
 
         public ObservableCollection<Cancion> Canciones
         {
@@ -50,6 +53,24 @@ namespace PlayerApp.ViewModel
                 RaisePropertyChanged("CurrentVolume");
             }
         }
+        public ObservableCollection<PlayList> ListasDeReproduccion
+        {
+            get { return listasDeReproduccion; }
+            set
+            {
+                listasDeReproduccion = value;
+                RaisePropertyChanged("ListasDeReproduccion");
+            }
+        }
+        public PlayList ListaDeReproduccionSeleccionada
+        {
+            get { return listaDeReproduccionSeleccionada; }
+            set
+            {
+                listaDeReproduccionSeleccionada = value;
+                RaisePropertyChanged("ListaDeReproduccionSeleccionada");
+            }
+        }
         #endregion
 
         #region Commands
@@ -62,6 +83,7 @@ namespace PlayerApp.ViewModel
         public HomeViewModel()
         {
             SetupFiles();
+            LoadPlayLists();
             
             _playbackState = PlaybackState.Stopped;
             CurrentVolume = 1f;
@@ -196,6 +218,23 @@ namespace PlayerApp.ViewModel
                 this.RaisePropertyChanged(() => this.Canciones);
                 i++;
             }
+        }
+
+        private void LoadPlayLists()
+        {
+            ListasDeReproduccion = new ObservableCollection<PlayList>();
+            using (ReadWriteJSON<PlayList> rw = new ReadWriteJSON<PlayList>(true))
+            {
+                ListasDeReproduccion.Add(new PlayList() { Nombre = "Todas las canciones...", Canciones = this.Canciones.ToList() });
+                foreach (string sFile in Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(), "PlayLists")))
+                {
+                    FileInfo fi = new FileInfo(sFile);
+                    ListasDeReproduccion.Add(rw.ReadJSON(fi.Name));
+                }
+            }
+
+            if (ListasDeReproduccion != null)
+                ListaDeReproduccionSeleccionada = ListasDeReproduccion[0];
         }
         #endregion
     }

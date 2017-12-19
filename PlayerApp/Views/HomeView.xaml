@@ -1,58 +1,213 @@
 ﻿<UserControl x:Class="PlayerApp.Views.HomeView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              xmlns:local="clr-namespace:PlayerApp.Views"
-             mc:Ignorable="d" d:DesignWidth="635" d:DesignHeight="505"
-             HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-    <Grid x:Name="listView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" DataContext="{Binding HomeViewModel, Source={StaticResource Locator}}">
+             mc:Ignorable="d"
+             d:DesignWidth="635"
+             d:DesignHeight="505"
+             HorizontalAlignment="Stretch"
+             VerticalAlignment="Stretch">
+
+    <UserControl.Resources>
+        <Style x:Key="ComboBoxButtonStyle"
+               TargetType="{x:Type ToggleButton}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Border Background="White"
+                                x:Name="border"
+                                CornerRadius="0,5,5,0"
+                                BorderThickness="0,1,1,1"
+                                BorderBrush="Black">
+                            <ContentPresenter />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ComboBoxTextBoxStyle"
+               TargetType="{x:Type TextBox}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Grid>
+                            <Border CornerRadius="5,0,0,5"
+                                    BorderThickness="1,1,0,1"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="Black">
+                                <ScrollViewer x:Name="PART_ContentHost" />
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ComboBoxStyle"
+               TargetType="{x:Type ComboBox}">
+            <Setter Property="HorizontalContentAlignment"
+                    Value="Center" />
+            <Setter Property="VerticalContentAlignment"
+                    Value="Center" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ComboBox}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition MaxWidth="18" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox Name="PART_EditableTextBox"
+                                     Style="{StaticResource ComboBoxTextBoxStyle}"
+                                     Padding="5,0,0,0"
+                                     Height="{TemplateBinding Height}" />
+                            <ToggleButton Grid.Column="1"
+                                          Margin="0"
+                                          Height="{TemplateBinding Height}"
+                                          Style="{StaticResource ComboBoxButtonStyle}"
+                                          Focusable="False"
+                                          IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                          ClickMode="Press">
+                                <Path Grid.Column="1"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      Data="M 0 0 L 4 4 L 8 0 Z"
+                                      Fill="DodgerBlue" />
+                            </ToggleButton>
+                            <ContentPresenter Name="ContentSite"
+                                              Content="{TemplateBinding SelectionBoxItem}"
+                                              ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                              ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                              VerticalAlignment="Center"
+                                              HorizontalAlignment="Left"
+                                              Margin="5,0,0,0" />
+                            <Popup Name="Popup"
+                                   Placement="Bottom"
+                                   IsOpen="{TemplateBinding IsDropDownOpen}"
+                                   AllowsTransparency="True"
+                                   Focusable="False"
+                                   PopupAnimation="Slide">
+                                <Grid Name="DropDown"
+                                      SnapsToDevicePixels="True"
+                                      MinWidth="{TemplateBinding ActualWidth}"
+                                      MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                                      Background="#FFFFFFFF">
+                                    <Border x:Name="DropDownBorder"
+                                            BorderThickness="1"
+                                            BorderBrush="Black" />
+                                    <ScrollViewer Margin="4,6,4,6"
+                                                  SnapsToDevicePixels="True">
+                                        <StackPanel IsItemsHost="True"
+                                                    KeyboardNavigation.DirectionalNavigation="Contained" />
+                                    </ScrollViewer>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid x:Name="listView"
+          HorizontalAlignment="Stretch"
+          VerticalAlignment="Stretch"
+          DataContext="{Binding HomeViewModel, Source={StaticResource Locator}}">
+
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition Height="60"/>
+            <RowDefinition Height="90" />
+            <RowDefinition />
+            <RowDefinition Height="60" />
         </Grid.RowDefinitions>
-        <ListView Grid.Row="0" ItemsSource="{Binding Canciones}" SelectedItem="{Binding CancionSeleccionada}" SizeChanged="ListView_SizeChanged">
+        <Grid Grid.Row="0"
+              Background="#FF444455">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0"
+                   Content="Canciones"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"
+                   FontSize="30"
+                   Foreground="#FFFDF2F2" />
+            <StackPanel Grid.Column="1"
+                        Orientation="Vertical"
+                        Margin="10,10,10,10">
+                <Label Content="Seleccionar lista de reproducción:"
+                       FontSize="15"
+                       Foreground="#FFFFFFFF" />
+                <ComboBox Height="23"
+                          Style="{StaticResource ComboBoxStyle}"
+                          ItemsSource="{Binding ListasDeReproduccion}"
+                          SelectedItem="{Binding ListaDeReproduccionSeleccionada}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Nombre}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </StackPanel>
+        </Grid>
+        <ListView Grid.Row="1"
+                  ItemsSource="{Binding Canciones}"
+                  SelectedItem="{Binding CancionSeleccionada}"
+                  SizeChanged="ListView_SizeChanged">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding ID}"/>
-                    <GridViewColumn Header="Nombre" DisplayMemberBinding="{Binding Nombre}"/>
-                    <GridViewColumn Header="Artista" DisplayMemberBinding="{Binding Artista}"/>
-                    <GridViewColumn Header="Album" DisplayMemberBinding="{Binding Album}"/>
+                    <GridViewColumn Header="ID"
+                                    DisplayMemberBinding="{Binding ID}" />
+                    <GridViewColumn Header="Nombre"
+                                    DisplayMemberBinding="{Binding Nombre}" />
+                    <GridViewColumn Header="Artista"
+                                    DisplayMemberBinding="{Binding Artista}" />
+                    <GridViewColumn Header="Album"
+                                    DisplayMemberBinding="{Binding Album}" />
                 </GridView>
             </ListView.View>
         </ListView>
-        <Grid Grid.Row="1" Background="#FF444455">
+        <Grid Grid.Row="2"
+              Background="#FF444455">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="60"/>
-                <ColumnDefinition Width="60"/>
-                <ColumnDefinition Width="60"/>
-                <ColumnDefinition/>
+                <ColumnDefinition />
+                <ColumnDefinition Width="60" />
+                <ColumnDefinition Width="60" />
+                <ColumnDefinition Width="60" />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
             <DockPanel Grid.Column="0"
                        VerticalAlignment="Stretch"
                        HorizontalAlignment="Center">
-                <Label Grid.Column="0" 
-                   Content="{Binding CancionSeleccionada.Nombre}" 
-                   VerticalAlignment="Center" 
-                   HorizontalAlignment="Center"/>
+                <Label Grid.Column="0"
+                       Content="{Binding CancionSeleccionada.Nombre}"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center" />
             </DockPanel>
 
             <Button Grid.Column="1"
                     Margin="10"
-                    Command="{Binding PrevSongCommand}"/>
+                    Command="{Binding PrevSongCommand}" />
 
             <Button Grid.Column="2"
                     Margin="10"
-                    Command="{Binding PlayPauseMusicCommand}"/>
+                    Command="{Binding PlayPauseMusicCommand}" />
 
             <Button Grid.Column="3"
                     Margin="10"
-                    Command="{Binding NextSongCommand}"/>
-            <Slider Grid.Column="4" Minimum="0" Maximum="1" Value="{Binding CurrentVolume, Mode=TwoWay}" x:Name="VolumeControl" VerticalAlignment="Center" Margin="10">
+                    Command="{Binding NextSongCommand}" />
+            <Slider Grid.Column="4"
+                    Minimum="0"
+                    Maximum="1"
+                    Value="{Binding CurrentVolume, Mode=TwoWay}"
+                    x:Name="VolumeControl"
+                    VerticalAlignment="Center"
+                    Margin="10">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="ValueChanged">
                         <i:InvokeCommandAction Command="{Binding VolumeControlCommand}"></i:InvokeCommandAction>

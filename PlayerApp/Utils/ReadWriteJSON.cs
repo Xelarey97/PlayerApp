@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PlayerApp.Utils
 {
-    public class ReadWriteJSON<T>
+    public class ReadWriteJSON<T> : IDisposable
     {
         private string PLAYLIST_PATH = string.Format("{0}\\PlayLists", Directory.GetCurrentDirectory());
 
@@ -40,15 +40,20 @@ namespace PlayerApp.Utils
             return false;            
         }
 
-        public T ReadJSON(T saveObject, string Filename)
+        public T ReadJSON(string Filename)
         {
-            string EndFile = string.Format("{0}\\{1}.json", PLAYLIST_PATH, Filename);
+            string EndFile = string.Format("{0}\\{1}", PLAYLIST_PATH, Filename);
             using (StreamReader file = File.OpenText(EndFile))
             {
                 JsonSerializer serializer = new JsonSerializer();
                 var obj = (T)serializer.Deserialize(file, typeof(T));
                 return obj;
             }
+        }
+
+        public void Dispose()
+        {
+            
         }
     }
 }
