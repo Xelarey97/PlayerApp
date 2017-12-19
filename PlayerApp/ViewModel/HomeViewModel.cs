@@ -64,7 +64,7 @@ namespace PlayerApp.ViewModel
             SetupFiles();
             
             _playbackState = PlaybackState.Stopped;
-            CurrentVolume = 0.5f;
+            CurrentVolume = 1f;
 
             PlayPauseMusicCommand = new RelayCommand(PlayPauseMusicMethod);
             NextSongCommand = new RelayCommand(NextSongMethod);
@@ -113,7 +113,7 @@ namespace PlayerApp.ViewModel
 
         private void NextSongMethod()
         {
-            if (Canciones != null && Canciones.Count > 0)
+            if (Canciones != null && Canciones.Count > 0 && cancionSonando != null)
             {
                 int? currentIndex = Canciones.IndexOf(Canciones.Where(x => x.ID == cancionSonando.ID).FirstOrDefault());
                 if (currentIndex.HasValue)
@@ -135,7 +135,7 @@ namespace PlayerApp.ViewModel
 
         private void PrevSongMethod()
         {
-            if (Canciones != null && Canciones.Count > 0)
+            if (Canciones != null && Canciones.Count > 0 && cancionSonando != null)
             {
                 int? currentIndex = Canciones.IndexOf(Canciones.Where(x => x.ID == cancionSonando.ID).FirstOrDefault());
                 if (currentIndex.HasValue)

@@ -52,7 +52,7 @@
                         </Controls:HamburgerMenuGlyphItem.Tag>
                     </Controls:HamburgerMenuGlyphItem>
 
-                    <Controls:HamburgerMenuGlyphItem Glyph="" Label="Canciones">
+                    <Controls:HamburgerMenuGlyphItem Glyph="" Label="Añadir Listas">
                         <Controls:HamburgerMenuGlyphItem.Tag>
                             <views:PlayListView/>
                         </Controls:HamburgerMenuGlyphItem.Tag>
@@ -69,7 +69,7 @@
                             <RowDefinition Height="48"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <Border Grid.Row="0" Background="#FF444444">
+                        <Border Grid.Row="0" Background="#FF444455">
                             <TextBlock x:Name="Header"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"

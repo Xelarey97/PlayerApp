@@ -8,10 +8,33 @@
              xmlns:local="clr-namespace:PlayerApp.Views"
              mc:Ignorable="d" d:DesignWidth="635" d:DesignHeight="505"
              HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#FF444444" DataContext="{Binding PlayListViewModel, Source={StaticResource Locator}}">
+
+    <UserControl.Resources>
+        <ControlTemplate x:Key="TextBoxBaseControlTemplate" TargetType="{x:Type TextBoxBase}">
+            <Border Background="{TemplateBinding Background}" 
+                x:Name="Bd"
+                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="10">
+                <ScrollViewer x:Name="PART_ContentHost"/>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" TargetName="Bd"/>
+                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                </Trigger>
+                <Trigger Property="Width" Value="Auto">
+                    <Setter Property="MinWidth" Value="100"/>
+                </Trigger>
+                <Trigger Property="Height" Value="Auto">
+                    <Setter Property="MinHeight" Value="20"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </UserControl.Resources>
+
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#FF444455" DataContext="{Binding PlayListViewModel, Source={StaticResource Locator}}">
         <Grid.RowDefinitions>
             <RowDefinition/>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="200"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
@@ -20,11 +43,46 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="1" VerticalAlignment="Center" Orientation="Vertical">
-                <Button Content="Add" Margin="0,10,0,10"/>
-                <Button Content="Quit" Margin="0,10,0,10"/>
+                <Button Content="Add" Margin="0,10,0,10" Command="{Binding AddCommand}"/>
+                <Button Content="Quit" Margin="0,10,0,10" Command="{Binding QuitCommand}"/>
             </StackPanel>
-            <ListView Grid.Column="0" Margin="20,10,20,10"></ListView>
-            <ListView Grid.Column="2" Margin="20,10,20,10"></ListView>
+            <ListView Grid.Column="0" Margin="20,0,20,10" ItemsSource="{Binding AllSongsList}" SelectedItem="{Binding CancionSeleccionada}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn DisplayMemberBinding="{Binding Nombre}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <ListView Grid.Column="2" Margin="20,0,20,10" ItemsSource="{Binding AddSongList}" SelectedItem="{Binding CancionSeleccionadaQuit}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn DisplayMemberBinding="{Binding Nombre}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Orientation="Vertical" Margin="15,15,15,15" VerticalAlignment="Center">
+                    <Label Content="Añadir Nombre Lista Reproducción: "/>
+                    <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" 
+                             Height="20" 
+                             VerticalContentAlignment="Center"
+                             Text="{Binding NewPlayListName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    </TextBox>
+                    <Button Width="60" 
+                            Height="10" 
+                            Margin="0,20,0,20" 
+                            Content="Añadir"
+                            HorizontalAlignment="Center"
+                            Command="{Binding AddPlayListCommand}"/>
+
+                </StackPanel>
+            </Grid>
         </Grid>
         
     </Grid>
