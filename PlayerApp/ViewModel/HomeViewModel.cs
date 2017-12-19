@@ -67,6 +67,7 @@ namespace PlayerApp.ViewModel
             get { return listaDeReproduccionSeleccionada; }
             set
             {
+                ChangeMusicListMethod();
                 listaDeReproduccionSeleccionada = value;
                 RaisePropertyChanged("ListaDeReproduccionSeleccionada");
             }
@@ -78,6 +79,7 @@ namespace PlayerApp.ViewModel
         public ICommand NextSongCommand { get; private set; }
         public ICommand PrevSongCommand { get; private set; }
         public ICommand VolumeControlCommand { get; private set; }
+        public ICommand ChangeMusicListCommand { get; private set; }
         #endregion
 
         public HomeViewModel()
@@ -92,6 +94,7 @@ namespace PlayerApp.ViewModel
             NextSongCommand = new RelayCommand(NextSongMethod);
             PrevSongCommand = new RelayCommand(PrevSongMethod);
             VolumeControlCommand = new RelayCommand(VolumeControlValueChanged);
+            ChangeMusicListCommand = new RelayCommand(ChangeMusicListMethod);
         }
 
         #region Command Methods
@@ -184,6 +187,18 @@ namespace PlayerApp.ViewModel
                 _audioPlayer.SetVolume(CurrentVolume);
             }
         }
+
+        private void ChangeMusicListMethod()
+        {
+            if (listaDeReproduccionSeleccionada != null)
+            {
+                Canciones.Clear();
+                foreach (Cancion c in listaDeReproduccionSeleccionada.Canciones)
+                {
+                    Canciones.Add(c);
+                }
+            }
+        }
         #endregion
 
         #region Class Methods
@@ -220,7 +235,7 @@ namespace PlayerApp.ViewModel
             }
         }
 
-        private void LoadPlayLists()
+        public void LoadPlayLists()
         {
             ListasDeReproduccion = new ObservableCollection<PlayList>();
             using (ReadWriteJSON<PlayList> rw = new ReadWriteJSON<PlayList>(true))

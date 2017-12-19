@@ -145,7 +145,8 @@
                 <ComboBox Height="23"
                           Style="{StaticResource ComboBoxStyle}"
                           ItemsSource="{Binding ListasDeReproduccion}"
-                          SelectedItem="{Binding ListaDeReproduccionSeleccionada}">
+                          SelectedItem="{Binding ListaDeReproduccionSeleccionada, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Nombre}" />

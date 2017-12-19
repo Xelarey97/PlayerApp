@@ -131,6 +131,7 @@ namespace PlayerApp.ViewModel
                 LoadCanciones();
                 AddSongList.Clear();
                 NewPlayListName = "";
+                (App.Current.Resources["Locator"] as ViewModelLocator).HomeViewModel.ListasDeReproduccion.Add(pl);
             }
         }
         #endregion
