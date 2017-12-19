@@ -46,14 +46,14 @@
                 <Button Content="Add" Margin="0,10,0,10" Command="{Binding AddCommand}"/>
                 <Button Content="Quit" Margin="0,10,0,10" Command="{Binding QuitCommand}"/>
             </StackPanel>
-            <ListView Grid.Column="0" Margin="20,0,20,10" ItemsSource="{Binding AllSongsList}" SelectedItem="{Binding CancionSeleccionada}">
+            <ListView Grid.Column="0" Margin="20,10,20,10" ItemsSource="{Binding AllSongsList}" SelectedItem="{Binding CancionSeleccionada}">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn DisplayMemberBinding="{Binding Nombre}"/>
                     </GridView>
                 </ListView.View>
             </ListView>
-            <ListView Grid.Column="2" Margin="20,0,20,10" ItemsSource="{Binding AddSongList}" SelectedItem="{Binding CancionSeleccionadaQuit}">
+            <ListView Grid.Column="2" Margin="20,10,20,10" ItemsSource="{Binding AddSongList}" SelectedItem="{Binding CancionSeleccionadaQuit}">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn DisplayMemberBinding="{Binding Nombre}"/>
@@ -68,7 +68,7 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0" Orientation="Vertical" Margin="15,15,15,15" VerticalAlignment="Center">
-                    <Label Content="Añadir Nombre Lista Reproducción: "/>
+                    <Label Content="Añadir Nombre Lista Reproducción: " Foreground="White" />
                     <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" 
                              Height="20" 
                              VerticalContentAlignment="Center"

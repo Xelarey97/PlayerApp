@@ -66,19 +66,11 @@
                 <DataTemplate DataType="{x:Type Controls:HamburgerMenuItem}">
                     <Grid x:Name="TheContentGrid">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="48"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <Border Grid.Row="0" Background="#FF444455">
-                            <TextBlock x:Name="Header"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       FontSize="24"
-                                       Foreground="White"
-                                       Text="{Binding Label}"/>
-                        </Border>
+                        
                         <ContentControl x:Name="TheContent"
-                                        Grid.Row="1"
+                                        Grid.Row="0"
                                         Focusable="False"
                                         Foreground="{DynamicResource BlackBrush}"
                                         Content="{Binding Tag}" 
