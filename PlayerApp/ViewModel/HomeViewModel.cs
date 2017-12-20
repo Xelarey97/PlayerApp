@@ -129,7 +129,6 @@ namespace PlayerApp.ViewModel
                     }
                     _audioPlayer = new AudioPlayer(cancionSeleccionada.Ruta, CurrentVolume);
                     _audioPlayer.PlaybackStopped += NextSongEnding;
-                    _audioPlayer.PlaybackStopType = AudioPlayer.PlaybackStopTypes.PlaybackStoppedReachingEndOfFile;
                     _audioPlayer.Play(CurrentVolume);
                     _playbackState = PlaybackState.Playing;
                     cancionSonando = cancionSeleccionada;
@@ -206,8 +205,7 @@ namespace PlayerApp.ViewModel
         #region Class Methods
         private void NextSongEnding()
         {
-            if (_audioPlayer.PlaybackStopType == AudioPlayer.PlaybackStopTypes.PlaybackStoppedReachingEndOfFile)
-                NextSongMethod();
+            NextSongMethod();
         }
 
         private void SetupFiles()

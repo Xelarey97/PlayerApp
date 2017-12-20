@@ -23,7 +23,6 @@ namespace PlayerApp.Model
 
         public AudioPlayer(string filepath, float volume)
         {
-            PlaybackStopType = PlaybackStopTypes.PlaybackStoppedReachingEndOfFile;
             _audioFileReader = new AudioFileReader(filepath) { Volume = volume };
 
             _output = new DirectSoundOut(200);
