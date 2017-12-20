@@ -89,32 +89,32 @@ namespace PlayerApp.ViewModel
             if (success == true)
             {
                 DownloadFileListPath = settings.FileName;
-            }
 
-            string[] ytLinks = File.ReadAllLines(DownloadFileListPath);
+                string[] ytLinks = File.ReadAllLines(DownloadFileListPath);
 
-            foreach (string url in ytLinks)
-            {
-                if (IsYouTubeUrl(url))
+                foreach (string url in ytLinks)
                 {
-                    listaCancionesDescargar.Add(new CancionesDescargas()
+                    if (IsYouTubeUrl(url))
                     {
-                        Url = url,
-                    });
+                        listaCancionesDescargar.Add(new CancionesDescargas()
+                        {
+                            Url = url,
+                        });
+                    }
                 }
-            }
-            
-            foreach (CancionesDescargas cd in listaCancionesDescargar)
-            {
-                var msi = await LoadMediaInfo(cd.Url);
-                if (msi != null)
+
+                foreach (CancionesDescargas cd in listaCancionesDescargar)
                 {
-                    cd.Titulo = msi.Title;
-                    cd.Autor = msi.Author;
-                    cd.VideoInfo = msi;
+                    var msi = await LoadMediaInfo(cd.Url);
+                    if (msi != null)
+                    {
+                        cd.Titulo = msi.Title;
+                        cd.Autor = msi.Author;
+                        cd.VideoInfo = msi;
+                    }
                 }
-            }
-            RaisePropertyChanged("ListaCancionesDescargar");
+                RaisePropertyChanged("ListaCancionesDescargar");
+            }            
         }
 
         private async void DownloadFilesMethod()
@@ -158,6 +158,7 @@ namespace PlayerApp.ViewModel
                 }
                 listaCancionesDescargar.Clear();
                 listaCancionesDescargar = null;
+                (App.Current.Resources["Locator"] as ViewModelLocator).HomeViewModel.LoadCanciones(MusicFolderPath);
             }
         }
         #endregion

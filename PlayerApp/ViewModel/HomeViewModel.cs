@@ -219,7 +219,7 @@ namespace PlayerApp.ViewModel
             LoadCanciones(newDirectory);
         }
 
-        private void LoadCanciones(string sDirectory)
+        public void LoadCanciones(string sDirectory)
         {
             canciones = new ObservableCollection<Cancion>();
             int i = 0;
