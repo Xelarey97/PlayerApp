@@ -19,6 +19,7 @@ namespace PlayerApp.ViewModel
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<HomeViewModel>();
             SimpleIoc.Default.Register<PlayListViewModel>();
+            SimpleIoc.Default.Register<DownloadViewModel>();
         }
 
         public MainViewModel Main { get { return ServiceLocator.Current.GetInstance<MainViewModel>(); } }
@@ -26,6 +27,8 @@ namespace PlayerApp.ViewModel
         public HomeViewModel HomeViewModel { get { return ServiceLocator.Current.GetInstance<HomeViewModel>(); } }
 
         public PlayListViewModel PlayListViewModel { get { return ServiceLocator.Current.GetInstance<PlayListViewModel>(); } }
+
+        public DownloadViewModel DownloadViewModel { get { return ServiceLocator.Current.GetInstance<DownloadViewModel>(); } }
         
         public static void Cleanup()
         {

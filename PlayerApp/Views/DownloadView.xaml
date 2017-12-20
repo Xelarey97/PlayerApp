@@ -1,14 +1,71 @@
 ﻿<UserControl x:Class="PlayerApp.Views.DownloadView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              xmlns:local="clr-namespace:PlayerApp.Views"
-             mc:Ignorable="d" d:DesignWidth="635" d:DesignHeight="505"
-             HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-    <Grid>
-            
+             xmlns:md="https://github.com/fantasticfiasco/mvvm-dialogs"
+             md:DialogServiceViews.IsRegistered="True"
+             mc:Ignorable="d"
+             d:DesignWidth="635"
+             d:DesignHeight="505"
+             HorizontalAlignment="Stretch"
+             VerticalAlignment="Stretch"
+             DataContext="{Binding Source={StaticResource Locator}, Path=DownloadViewModel}">
+
+    <Grid HorizontalAlignment="Stretch"
+          VerticalAlignment="Stretch"
+          Background="#FF444455"
+          DataContext="{Binding DownloadViewModel, Source={StaticResource Locator}}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="90" />
+            <RowDefinition />
+            <RowDefinition Height="100" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center">
+            <Label Content="Descargar Canciones YT"
+                   FontSize="30"
+                   Foreground="#FFFFFFFF" />
+        </StackPanel>
+        <ListView Grid.Row="1"
+                  ItemsSource="{Binding ListaCancionesDescargar}"
+                  SizeChanged="ListView_SizeChanged">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Titulo"
+                                    DisplayMemberBinding="{Binding Titulo}" />
+                    <GridViewColumn Header="Autor"
+                                    DisplayMemberBinding="{Binding Autor}" />
+                    <GridViewColumn Header="Estado"
+                                    DisplayMemberBinding="{Binding Estado}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0"
+                    Content="Iniciar Descarga"
+                    Height="50"
+                    Width="120"
+                    Command="{Binding DownloadFilesCommand}"/>
+            <StackPanel Grid.Column="1"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center">
+                <TextBox Width="300"
+                         Text="{Binding DownloadFileListPath, Mode=TwoWay}" 
+                         IsEnabled="False"/>
+                <Button Width="70"
+                        Content="Buscar"
+                        Command="{Binding OpenFileDialogCommand}" />
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>

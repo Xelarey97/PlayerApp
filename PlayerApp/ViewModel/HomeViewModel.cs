@@ -67,8 +67,8 @@ namespace PlayerApp.ViewModel
             get { return listaDeReproduccionSeleccionada; }
             set
             {
-                ChangeMusicListMethod();
                 listaDeReproduccionSeleccionada = value;
+                ChangeMusicListMethod();
                 RaisePropertyChanged("ListaDeReproduccionSeleccionada");
             }
         }
@@ -128,6 +128,7 @@ namespace PlayerApp.ViewModel
                         _audioPlayer = null;
                     }
                     _audioPlayer = new AudioPlayer(cancionSeleccionada.Ruta, CurrentVolume);
+                    _audioPlayer.PlaybackStopped += NextSongEnding;
                     _audioPlayer.PlaybackStopType = AudioPlayer.PlaybackStopTypes.PlaybackStoppedReachingEndOfFile;
                     _audioPlayer.Play(CurrentVolume);
                     _playbackState = PlaybackState.Playing;
@@ -190,18 +191,25 @@ namespace PlayerApp.ViewModel
 
         private void ChangeMusicListMethod()
         {
-            if (listaDeReproduccionSeleccionada != null)
+            if (listaDeReproduccionSeleccionada != null && listaDeReproduccionSeleccionada.Canciones.Count > 0)
             {
                 Canciones.Clear();
                 foreach (Cancion c in listaDeReproduccionSeleccionada.Canciones)
                 {
-                    Canciones.Add(c);
+                    if (File.Exists(c.Ruta))
+                        Canciones.Add(c);
                 }
             }
         }
         #endregion
 
         #region Class Methods
+        private void NextSongEnding()
+        {
+            if (_audioPlayer.PlaybackStopType == AudioPlayer.PlaybackStopTypes.PlaybackStoppedReachingEndOfFile)
+                NextSongMethod();
+        }
+
         private void SetupFiles()
         {
             string path = Directory.GetCurrentDirectory();
@@ -249,7 +257,10 @@ namespace PlayerApp.ViewModel
             }
 
             if (ListasDeReproduccion != null)
-                ListaDeReproduccionSeleccionada = ListasDeReproduccion[0];
+            {
+                listaDeReproduccionSeleccionada = ListasDeReproduccion.FirstOrDefault();
+                RaisePropertyChanged("ListaDeReproduccionSeleccionada");
+            }
         }
         #endregion
     }

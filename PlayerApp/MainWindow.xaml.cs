@@ -34,12 +34,5 @@ namespace PlayerApp
             // close the pane
             this.HamburguerMenuControl.IsPaneOpen = false;
         }
-
-        private void TheContent_Loaded(object sender, RoutedEventArgs e)
-        {
-            HamburgerMenuGlyphItem hmgi = new HamburgerMenuGlyphItem();
-            hmgi.Tag = new HomeView();
-            this.HamburguerMenuControl.Content = hmgi;
-        }
     }
 }
