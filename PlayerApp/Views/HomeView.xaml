@@ -193,15 +193,24 @@
 
             <Button Grid.Column="1"
                     Margin="10"
-                    Command="{Binding PrevSongCommand}" />
+                    Command="{Binding PrevSongCommand}"
+                    FontFamily="Segoe MDL2 Assets"
+                    Content="&#xE892;"
+                    FontSize="24" />
 
             <Button Grid.Column="2"
                     Margin="10"
-                    Command="{Binding PlayPauseMusicCommand}" />
+                    Command="{Binding PlayPauseMusicCommand}"
+                    FontFamily="Segoe MDL2 Assets"
+                    Content="&#xE768;"
+                    FontSize="24" />
 
             <Button Grid.Column="3"
                     Margin="10"
-                    Command="{Binding NextSongCommand}" />
+                    Command="{Binding NextSongCommand}"
+                    FontFamily="Segoe MDL2 Assets"
+                    Content="&#xE893;"
+                    FontSize="24"/>
             <Slider Grid.Column="4"
                     Minimum="0"
                     Maximum="1"
