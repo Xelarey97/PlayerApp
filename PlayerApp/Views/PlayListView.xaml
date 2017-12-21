@@ -18,7 +18,37 @@
             <Border Background="{TemplateBinding Background}"
                     x:Name="Bd"
                     BorderThickness="{TemplateBinding BorderThickness}"
-                    CornerRadius="10">
+                    CornerRadius="10,0,0,10">
+                <ScrollViewer x:Name="PART_ContentHost" />
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsEnabled"
+                         Value="False">
+                    <Setter Property="Background"
+                            Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+                            TargetName="Bd" />
+                    <Setter Property="Foreground"
+                            Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                </Trigger>
+                <Trigger Property="Width"
+                         Value="Auto">
+                    <Setter Property="MinWidth"
+                            Value="100" />
+                </Trigger>
+                <Trigger Property="Height"
+                         Value="Auto">
+                    <Setter Property="MinHeight"
+                            Value="20" />
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="TextBoxLeftSide"
+                         TargetType="{x:Type TextBoxBase}">
+            <Border Background="{TemplateBinding Background}"
+                    x:Name="Bd"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="0,10,10,0">
                 <ScrollViewer x:Name="PART_ContentHost" />
             </Border>
             <ControlTemplate.Triggers>
@@ -50,6 +80,7 @@
           DataContext="{Binding PlayListViewModel, Source={StaticResource Locator}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="90" />
+            <RowDefinition Height="50"/>
             <RowDefinition />
             <RowDefinition Height="150" />
         </Grid.RowDefinitions>
@@ -61,6 +92,29 @@
                    Foreground="#FFFDF2F2" />
         </StackPanel>
         <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0"
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal">
+                <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" 
+                         Width="200"
+                         Height="20">
+                </TextBox>
+                <TextBox Template="{StaticResource TextBoxLeftSide}"
+                         Height="20"
+                         Width="20"
+                         IsEnabled="False"
+                         FontFamily="Segoe MDL2 Assets"
+                         VerticalContentAlignment="Center"
+                         Text="&#xE721;">
+                </TextBox>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition Width="40" />
@@ -97,7 +151,7 @@
                 </ListView.View>
             </ListView>
         </Grid>
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="3">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
@@ -109,11 +163,21 @@
                             VerticalAlignment="Center">
                     <Label Content="Añadir Nombre Lista Reproducción: "
                            Foreground="White" />
-                    <TextBox Template="{StaticResource TextBoxBaseControlTemplate}"
-                             Height="20"
-                             VerticalContentAlignment="Center"
-                             Text="{Binding NewPlayListName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                    </TextBox>
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Left">
+                        <TextBox Template="{StaticResource TextBoxBaseControlTemplate}"
+                                 Height="20"
+                                 Width="250"
+                                 VerticalContentAlignment="Center"
+                                 Text="{Binding NewPlayListName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        </TextBox>
+                        <TextBox Template="{StaticResource TextBoxLeftSide}"
+                                 Height="20"
+                                 Width="10"
+                                 VerticalContentAlignment="Center"
+                                 Text="">
+                        </TextBox>
+                    </StackPanel>
                     <Button Width="60"
                             Height="10"
                             Margin="0,20,0,20"

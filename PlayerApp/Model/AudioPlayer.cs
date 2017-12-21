@@ -27,7 +27,6 @@ namespace PlayerApp.Model
 
             _output = new DirectSoundOut(200);
             _output.PlaybackStopped += _output_PlaybackStopped;
-
             var wc = new WaveChannel32(_audioFileReader);
             wc.PadWithZeroes = false;
 
@@ -42,7 +41,6 @@ namespace PlayerApp.Model
 
         private void _output_PlaybackStopped(object sender, StoppedEventArgs e)
         {
-            Dispose();
             if (PlaybackStopped != null)
             {
                 PlaybackStopped();

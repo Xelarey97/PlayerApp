@@ -100,40 +100,7 @@ namespace PlayerApp.ViewModel
         #region Command Methods
         private void PlayPauseMusicMethod()
         {
-            if (cancionSeleccionada != null)
-            {
-                if(_playbackState == PlaybackState.Playing && cancionSeleccionada == cancionSonando)
-                {
-                    _audioPlayer.Pause();
-                    _playbackState = PlaybackState.Paused;
-                }
-                else if (cancionSeleccionada == cancionSonando)
-                {
-                    if (_playbackState == PlaybackState.Stopped || _playbackState == PlaybackState.Paused)
-                    {
-                        _audioPlayer.Play(0.5);
-                        _playbackState = PlaybackState.Playing;
-                    }
-                    else
-                    {
-                        _audioPlayer.Pause();
-                        _playbackState = PlaybackState.Paused;
-                    }
-                }
-                else if ((_playbackState == PlaybackState.Stopped || _playbackState == PlaybackState.Paused) || cancionSeleccionada != cancionSonando)
-                {
-                    if (_audioPlayer != null)
-                    {
-                        _audioPlayer.Dispose();
-                        _audioPlayer = null;
-                    }
-                    _audioPlayer = new AudioPlayer(cancionSeleccionada.Ruta, CurrentVolume);
-                    _audioPlayer.PlaybackStopped += NextSongEnding;
-                    _audioPlayer.Play(CurrentVolume);
-                    _playbackState = PlaybackState.Playing;
-                    cancionSonando = cancionSeleccionada;
-                }
-            }
+            TogglePlayPause();
         }
 
         private void NextSongMethod()
@@ -205,7 +172,8 @@ namespace PlayerApp.ViewModel
         #region Class Methods
         private void NextSongEnding()
         {
-            NextSongMethod();
+            if (_audioPlayer.GetPositionInSeconds() == _audioPlayer.GetLenghtInSeconds())
+                NextSongMethod();
         }
 
         private void SetupFiles()
@@ -258,6 +226,44 @@ namespace PlayerApp.ViewModel
             {
                 listaDeReproduccionSeleccionada = ListasDeReproduccion.FirstOrDefault();
                 RaisePropertyChanged("ListaDeReproduccionSeleccionada");
+            }
+        }
+
+        private void TogglePlayPause()
+        {
+            if (cancionSeleccionada != null)
+            {
+                if (_playbackState == PlaybackState.Playing && cancionSeleccionada == cancionSonando)
+                {
+                    _audioPlayer.Pause();
+                    _playbackState = PlaybackState.Paused;
+                }
+                else if (cancionSeleccionada == cancionSonando)
+                {
+                    if (_playbackState == PlaybackState.Stopped || _playbackState == PlaybackState.Paused)
+                    {
+                        _audioPlayer.Play(CurrentVolume);
+                        _playbackState = PlaybackState.Playing;
+                    }
+                    else
+                    {
+                        _audioPlayer.Pause();
+                        _playbackState = PlaybackState.Paused;
+                    }
+                }
+                else if ((_playbackState == PlaybackState.Stopped || _playbackState == PlaybackState.Paused) || cancionSeleccionada != cancionSonando)
+                {
+                    if (_audioPlayer != null)
+                    {
+                        _audioPlayer.Dispose();
+                        _audioPlayer = null;
+                    }
+                    _audioPlayer = new AudioPlayer(cancionSeleccionada.Ruta, CurrentVolume);
+                    _audioPlayer.Play(CurrentVolume);
+                    _playbackState = PlaybackState.Playing;
+                    cancionSonando = cancionSeleccionada;
+                    _audioPlayer.PlaybackStopped += NextSongEnding;
+                }
             }
         }
         #endregion
