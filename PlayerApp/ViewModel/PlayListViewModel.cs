@@ -17,11 +17,13 @@ namespace PlayerApp.ViewModel
     public class PlayListViewModel : ViewModelBase
     {
         #region Propiedades
+        private ObservableCollection<Cancion> SongsList;
         private ObservableCollection<Cancion> allSongsList;
-        private  ObservableCollection<Cancion> addSongsList;
+        private ObservableCollection<Cancion> addSongsList;
         private Cancion cancionSeleccionada;
         private Cancion cancionSeleccionadaQuit;
         private string newPlayListName;
+        private string searchTextBoxText;
 
         public ObservableCollection<Cancion> AllSongsList
         {
@@ -72,21 +74,39 @@ namespace PlayerApp.ViewModel
                 RaisePropertyChanged("NewPlayListName");
             }
         }
+
+        public string SearchTextBoxText
+        {
+            get { return searchTextBoxText; }
+            set
+            {
+                searchTextBoxText = value;
+                RaisePropertyChanged("SearchTextBoxText");
+            }
+        }
         #endregion
 
         #region Commands
         public ICommand AddCommand { get; private set; }
         public ICommand QuitCommand { get; private set; }
         public ICommand AddPlayListCommand { get; private set; }
+        public ICommand SearchBoxCommand { get; private set; }
         #endregion
 
         public PlayListViewModel()
         {
-            LoadCanciones();
+            AllSongsList = new ObservableCollection<Cancion>();
+            SongsList = new ObservableCollection<Cancion>();
+
+            SongsList.LoadCanciones();
+            AllSongsList.AddRange(SongsList);
+
             AddCommand = new RelayCommand(AddMethod);
             QuitCommand = new RelayCommand(QuitMethod);
             AddSongList = new ObservableCollection<Cancion>();
             AddPlayListCommand = new RelayCommand(AddPlayListMethod);
+            SearchBoxCommand = new RelayCommand(SearchBoxMethod);
+            SearchTextBoxText = "";
         }
 
         #region Command Methods
@@ -122,45 +142,44 @@ namespace PlayerApp.ViewModel
         {
             if (AddSongList != null && AddSongList.Count > 0 && !string.IsNullOrEmpty(NewPlayListName))
             {
-                PlayList pl = new PlayList();
-                pl.Canciones = new List<Cancion>();
-                pl.Nombre = NewPlayListName;
+                //Load Object PlayList
+                PlayList pl = new PlayList() { 
+                    Canciones = new List<Cancion>(),
+                    Nombre = NewPlayListName,
+                };
                 pl.Canciones.AddRange(AddSongList);
-                ReadWriteJSON<PlayList> rw = new ReadWriteJSON<PlayList>(true);
+
+                //Save JSON
+                LoadSavePLFromJSON<PlayList> rw = new LoadSavePLFromJSON<PlayList>(true);
                 rw.SaveJSON(pl, pl.Nombre);
-                LoadCanciones();
+
+                //Reset UI and Add item to CB PlayLists at HomeView
+                AllSongsList.Clear();
+                AllSongsList.AddRange(SongsList);
                 AddSongList.Clear();
                 NewPlayListName = "";
                 (App.Current.Resources["Locator"] as ViewModelLocator).HomeViewModel.ListasDeReproduccion.Add(pl);
             }
         }
+
+        private void SearchBoxMethod()
+        {
+            if (!string.IsNullOrWhiteSpace(SearchTextBoxText))
+            {
+                AllSongsList.Clear();
+                var auxList = SongsList.Select(x => x).Where(x => x.Nombre.Contains(SearchTextBoxText)).ToList();
+                AllSongsList.AddRange(auxList);
+            }
+            else
+            {
+                AllSongsList.AddRange(SongsList);
+            }
+            RaisePropertyChanged("AllSongsList");
+        }
         #endregion
 
         #region Private Methods
-        private void LoadCanciones()
-        {
-            string path = Directory.GetCurrentDirectory();
-            string sDirectory = string.Format("{0}\\Musica", path);
-            allSongsList = new ObservableCollection<Cancion>();
-            int i = 0;
-            foreach (var filename in Directory.GetFiles(sDirectory))
-            {
-                FileInfo fi = new FileInfo(filename);
-                TagLib.File tagFile = TagLib.File.Create(filename);
-                Cancion cancion = new Cancion()
-                {
-                    ID = i,
-                    Nombre = Path.GetFileNameWithoutExtension(fi.Name),
-                    Artista = tagFile.Tag.FirstAlbumArtist,
-                    Genero = tagFile.Tag.FirstGenre,
-                    Album = tagFile.Tag.Album,
-                    Ruta = filename
-                };
-                AllSongsList.Add(cancion);
-                this.RaisePropertyChanged(() => this.AllSongsList);
-                i++;
-            }
-        }
+        
         #endregion
     }
 }

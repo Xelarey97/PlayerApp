@@ -107,8 +107,10 @@
     <Compile Include="Model\Cancion.cs" />
     <Compile Include="Model\CancionesDescargas.cs" />
     <Compile Include="Model\PlayList.cs" />
+    <Compile Include="Utils\AppGenericDirectories.cs" />
     <Compile Include="Utils\EstadoDescarga.cs" />
-    <Compile Include="Utils\ReadWriteJSON.cs" />
+    <Compile Include="Utils\HelperMethods.cs" />
+    <Compile Include="Utils\LoadSavePLFromJSON.cs" />
     <Compile Include="ViewModel\DownloadViewModel.cs" />
     <Compile Include="ViewModel\HomeViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />

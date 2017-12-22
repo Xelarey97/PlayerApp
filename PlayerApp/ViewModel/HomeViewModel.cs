@@ -85,7 +85,10 @@ namespace PlayerApp.ViewModel
         public HomeViewModel()
         {
             SetupFiles();
-            LoadPlayLists();
+            canciones = new ObservableCollection<Cancion>();
+            listasDeReproduccion = new ObservableCollection<PlayList>();
+            Canciones.LoadCanciones();
+            ListasDeReproduccion.LoadPlayLists(ref listaDeReproduccionSeleccionada);
             
             _playbackState = PlaybackState.Stopped;
             CurrentVolume = 1f;
@@ -178,54 +181,10 @@ namespace PlayerApp.ViewModel
 
         private void SetupFiles()
         {
-            string path = Directory.GetCurrentDirectory();
-            string newDirectory = string.Format("{0}\\Musica", path);
+            string newDirectory = AppGenericDirectories.MusicDirectory;
             if(!Directory.Exists(newDirectory))
             {
                 Directory.CreateDirectory(newDirectory);
-            }
-            LoadCanciones(newDirectory);
-        }
-
-        public void LoadCanciones(string sDirectory)
-        {
-            canciones = new ObservableCollection<Cancion>();
-            int i = 0;
-            foreach (var filename in Directory.GetFiles(sDirectory))
-            {
-                FileInfo fi = new FileInfo(filename);
-                TagLib.File tagFile = TagLib.File.Create(filename);
-                Cancion cancion = new Cancion() {
-                    ID = i,
-                    Nombre = Path.GetFileNameWithoutExtension(fi.Name),
-                    Artista = tagFile.Tag.FirstAlbumArtist,
-                    Genero = tagFile.Tag.FirstGenre,
-                    Album = tagFile.Tag.Album,
-                    Ruta = filename
-                };
-                Canciones.Add(cancion);
-                this.RaisePropertyChanged(() => this.Canciones);
-                i++;
-            }
-        }
-
-        public void LoadPlayLists()
-        {
-            ListasDeReproduccion = new ObservableCollection<PlayList>();
-            using (ReadWriteJSON<PlayList> rw = new ReadWriteJSON<PlayList>(true))
-            {
-                ListasDeReproduccion.Add(new PlayList() { Nombre = "Todas las canciones...", Canciones = this.Canciones.ToList() });
-                foreach (string sFile in Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(), "PlayLists")))
-                {
-                    FileInfo fi = new FileInfo(sFile);
-                    ListasDeReproduccion.Add(rw.ReadJSON(fi.Name));
-                }
-            }
-
-            if (ListasDeReproduccion != null)
-            {
-                listaDeReproduccionSeleccionada = ListasDeReproduccion.FirstOrDefault();
-                RaisePropertyChanged("ListaDeReproduccionSeleccionada");
             }
         }
 

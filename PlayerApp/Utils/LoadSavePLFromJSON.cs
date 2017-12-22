@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace PlayerApp.Utils
 {
-    public class ReadWriteJSON<T> : IDisposable
+    public class LoadSavePLFromJSON<T> : IDisposable
     {
         private string PLAYLIST_PATH = string.Format("{0}\\PlayLists", Directory.GetCurrentDirectory());
 
-        public ReadWriteJSON(){}
+        public LoadSavePLFromJSON(){}
 
-        public ReadWriteJSON(bool CreateDir)
+        public LoadSavePLFromJSON(bool CreateDir)
         {
             if (!Directory.Exists(PLAYLIST_PATH) && CreateDir)
             {

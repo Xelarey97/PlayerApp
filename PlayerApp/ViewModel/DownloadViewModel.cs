@@ -56,9 +56,7 @@ namespace PlayerApp.ViewModel
         #endregion
 
         private readonly IDialogService dialogService;
-        private readonly string FolderPath = Path.Combine(Directory.GetCurrentDirectory(), "Downloads");
-        private readonly string MusicFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "Musica");
-        private static readonly Cli FfmpegCli = new Cli(Directory.GetCurrentDirectory() + "\\Resources\\ffmpeg.exe");
+        private ViewModelLocator loc = HelperMethods.GetLocator();
 
         public DownloadViewModel(IDialogService dialogService)
         {
@@ -68,9 +66,9 @@ namespace PlayerApp.ViewModel
             OpenFileDialogCommand = new RelayCommand(OpenFileDialogMethod);
             DownloadFilesCommand = new RelayCommand(DownloadFilesMethod);
 
-            if (!Directory.Exists(FolderPath))
+            if (!Directory.Exists(AppGenericDirectories.DownloadsDirectory))
             {
-                Directory.CreateDirectory(FolderPath);
+                Directory.CreateDirectory(AppGenericDirectories.DownloadsDirectory);
             }
         }
 
@@ -80,7 +78,7 @@ namespace PlayerApp.ViewModel
             var settings = new SaveFileDialogSettings
             {
                 Title = "Seleccionar lista",
-                InitialDirectory = FolderPath,
+                InitialDirectory = AppGenericDirectories.DownloadsDirectory,
                 Filter = "Text Documents (*.txt)|*.txt|All Files (*.*)|*.*",
                 CheckFileExists = false
             };
@@ -136,15 +134,15 @@ namespace PlayerApp.ViewModel
 
                     var streamInfo = streamInfoSet.Audio.OrderByDescending(x => x.AudioEncoding).FirstOrDefault();
                     string ext = ".webm";
-                    string fileName = string.Format("{0}\\{1}{2}", FolderPath, title, ext);
+                    string fileName = string.Format("{0}\\{1}{2}", AppGenericDirectories.DownloadsDirectory, title, ext);
                     await client.DownloadMediaStreamAsync(streamInfo, fileName);
 
                     cd.Estado = EstadoDescarga.Convirtiendo;
 
-                    var outputFilePath = Path.Combine(MusicFolderPath, title + ".mp3");
+                    var outputFilePath = Path.Combine(AppGenericDirectories.MusicDirectory, title + ".mp3");
                     if (!File.Exists(outputFilePath))
                     {
-                        await FfmpegCli.ExecuteAsync(string.Format("-i \"{0}\" -q:a 0 -map a \"{1}\" -y", fileName, outputFilePath));
+                        await AppGenericDirectories.FfmpegCli.ExecuteAsync(string.Format("-i \"{0}\" -q:a 0 -map a \"{1}\" -y", fileName, outputFilePath));
                     }
                     File.Delete(fileName);
                     
@@ -158,7 +156,8 @@ namespace PlayerApp.ViewModel
                 }
                 listaCancionesDescargar.Clear();
                 listaCancionesDescargar = null;
-                (App.Current.Resources["Locator"] as ViewModelLocator).HomeViewModel.LoadCanciones(MusicFolderPath);
+
+                loc.HomeViewModel.Canciones.LoadCanciones();
             }
         }
         #endregion

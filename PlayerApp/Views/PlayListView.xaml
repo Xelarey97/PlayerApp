@@ -102,7 +102,13 @@
                         Orientation="Horizontal">
                 <TextBox Template="{StaticResource TextBoxBaseControlTemplate}" 
                          Width="200"
-                         Height="20">
+                         Height="20"
+                         Text="{Binding SearchTextBoxText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="TextChanged">
+                            <i:InvokeCommandAction Command="{Binding SearchBoxCommand}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                 </TextBox>
                 <TextBox Template="{StaticResource TextBoxLeftSide}"
                          Height="20"
@@ -131,7 +137,7 @@
                         Command="{Binding QuitCommand}" />
             </StackPanel>
             <ListView Grid.Column="0"
-                      Margin="0,0,20,0"
+                      Margin="5,0,20,0"
                       ItemsSource="{Binding AllSongsList}"
                       SelectedItem="{Binding CancionSeleccionada}">
                 <ListView.View>
@@ -141,7 +147,7 @@
                 </ListView.View>
             </ListView>
             <ListView Grid.Column="2"
-                      Margin="20,0,0,0"
+                      Margin="20,0,5,0"
                       ItemsSource="{Binding AddSongList}"
                       SelectedItem="{Binding CancionSeleccionadaQuit}">
                 <ListView.View>
