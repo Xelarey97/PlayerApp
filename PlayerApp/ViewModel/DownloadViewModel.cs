@@ -90,6 +90,9 @@ namespace PlayerApp.ViewModel
 
                 string[] ytLinks = File.ReadAllLines(DownloadFileListPath);
 
+                if (listaCancionesDescargar == null)
+                    listaCancionesDescargar = new ObservableCollection<CancionesDescargas>();
+
                 foreach (string url in ytLinks)
                 {
                     if (IsYouTubeUrl(url))
